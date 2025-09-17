@@ -8,6 +8,7 @@ import signal
 import httpx
 import os
 import threading
+import pandas as pd
 from dotenv import load_dotenv
 
 load_dotenv()
