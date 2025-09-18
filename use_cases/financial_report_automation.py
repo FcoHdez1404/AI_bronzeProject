@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 from autogen import AssistantAgent, UserProxyAgent
 import pandas as pd
-
+import streamlit as st
 
 load_dotenv()
 
@@ -139,3 +139,14 @@ user_proxy.initiate_chat(
     max_turns=2,
     summary_method="last_msg",
 )
+
+# Interfaz básica con Streamlit
+st.title("Automatización de Reporte Financiero")
+st.write("Este proyecto automatiza la generación y revisión de reportes financieros usando agentes inteligentes.")
+
+if st.button("Leer y mostrar datos financieros"):
+    try:
+        df = pd.read_csv("financial_data.csv")
+        st.dataframe(df)
+    except Exception as e:
+        st.error(f"Error al leer el archivo: {e}")
