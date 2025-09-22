@@ -144,13 +144,6 @@ user_proxy.initiate_chat(
 st.title("Automatización de Reporte Financiero")
 st.write("Este proyecto automatiza la generación y revisión de reportes financieros usando agentes inteligentes.")
 
-if st.button("Leer y mostrar datos financieros"):
-    try:
-        df = pd.read_csv("financial_data.csv")
-        st.dataframe(df)
-    except Exception as e:
-        st.error(f"Error al leer el archivo: {e}")
-
 uploaded_file = st.file_uploader("Sube un archivo CSV", type="csv")
 
 if uploaded_file is not None:
@@ -175,18 +168,8 @@ if st.button("Generar y mostrar resumen del reporte financiero"):
         # Suponiendo que el resumen generado está en la última respuesta del feedback_agent
         # (Ajusta esto según cómo tu framework devuelva los resultados)
         resumen = feedback_agent.chat_messages[user_proxy][-1]["content"]
-        st.subheader("Resumen ejecutivo del reporte financiero:")
-        st.write(resumen)
+        resumen_summary = summary_generation_agent.chat_messages[user_proxy][-1]["content"]
+        st.subheader("Resumen generado por Summary_Generation_Agent:")
+        st.write(resumen_summary + resumen)
     except Exception as e:
         st.error(f"Error al generar el resumen: {e}")
-
-# Interfaz básica con Streamlit
-st.title("Automatización de Reporte Financiero")
-st.write("Este proyecto automatiza la generación y revisión de reportes financieros usando agentes inteligentes.")
-
-if st.button("Leer y mostrar datos financieros"):
-    try:
-        df = pd.read_csv("financial_data.csv")
-        st.dataframe(df)
-    except Exception as e:
-        st.error(f"Error al leer el archivo: {e}")
