@@ -189,19 +189,21 @@ user_input = st.text_input("Escribe tu mensaje:")
 
 if st.button("Enviar mensaje"):
     if user_input.strip() != "":
-        # Usar el método 'chat' para conversación fluida
-        response = chat_agent.chat(
-            messages=[{"role": "user", "content": user_input}]
-        )
-        # Si la respuesta es un objeto, extraer el texto
+        if hasattr(chat_agent, "generate_oai_reply"):
+            messages = [{"role": "user", "content": user_input}]
+            response = chat_agent.generate_oai_reply(messages, "User")
+            st.write(f"Response type: {type(response)}")
+        elif hasattr(chat_agent, "generate_llm_reply"):
+            messages = [{"role": "user", "content": user_input}]
+            response = chat_agent.generate_llm_reply(messages, "User")
+            st.write(f"Response type: {type(response)}")
+        else:
+            response = "El agente no soporta chat directo."
+            st.write(f"Response type: {type(response)}")
         if isinstance(response, dict) and "content" in response:
             reply = response["content"]
+            st.write(f"Response type: {type(response)}")
         else:
             reply = str(response)
         st.session_state.chat_history.append(("Tú", user_input))
         st.session_state.chat_history.append(("Agente", reply))
-
-# Mostrar historial
-st.subheader("Conversación:")
-for speaker, msg in st.session_state.chat_history:
-    st.markdown(f"**{speaker}:** {msg}")
