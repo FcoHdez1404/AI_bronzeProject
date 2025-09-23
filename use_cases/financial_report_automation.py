@@ -15,6 +15,12 @@ llm_config = {
     "api_key": os.environ["OPENAI_API_KEY"],
 }
 
+chat_agent = AssistantAgent(
+    name="Chat_Agent",
+    llm_config=llm_config,
+    system_message="You are a helpful assistant. Answer as clearly as possible."
+)
+
 # Define the data aggregation agent
 data_aggregation_agent = AssistantAgent(
     name="Data_Aggregation_Agent",
@@ -167,9 +173,35 @@ if st.button("Generar y mostrar resumen del reporte financiero"):
         )
         # Suponiendo que el resumen generado está en la última respuesta del feedback_agent
         # (Ajusta esto según cómo tu framework devuelva los resultados)
-        resumen = feedback_agent.chat_messages[user_proxy][-1]["content"]
-        resumen_summary = summary_generation_agent.chat_messages[user_proxy][-1]["content"]
         st.subheader("Resumen generado por Summary_Generation_Agent:")
-        st.write(resumen_summary + resumen)
+        for idx, msg in enumerate(summary_generation_agent.chat_messages[user_proxy]):
+            st.markdown(f"**Mensaje {idx+1}:**")
+            st.write(msg["content"])
     except Exception as e:
         st.error(f"Error al generar el resumen: {e}")
+
+st.title("Chat interactivo con Chat_Agent")
+
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
+user_input = st.text_input("Escribe tu mensaje:")
+
+if st.button("Enviar mensaje"):
+    if user_input.strip() != "":
+        # Usar el método 'chat' para conversación fluida
+        response = chat_agent.chat(
+            messages=[{"role": "user", "content": user_input}]
+        )
+        # Si la respuesta es un objeto, extraer el texto
+        if isinstance(response, dict) and "content" in response:
+            reply = response["content"]
+        else:
+            reply = str(response)
+        st.session_state.chat_history.append(("Tú", user_input))
+        st.session_state.chat_history.append(("Agente", reply))
+
+# Mostrar historial
+st.subheader("Conversación:")
+for speaker, msg in st.session_state.chat_history:
+    st.markdown(f"**{speaker}:** {msg}")
