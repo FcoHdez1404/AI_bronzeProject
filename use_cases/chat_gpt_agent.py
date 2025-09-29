@@ -27,6 +27,30 @@ if "chat_history" not in st.session_state:
 
 user_input = st.text_input("Escribe tu mensaje:")
 
+# Agrega este bloque antes de tu st.button
+st.markdown(
+    """
+    <style>
+    div.stButton > button:first-child {
+        background-color: #1E90FF;
+        color: white;
+        border: none;
+        height: 3em;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: bold;
+        transition: background-color 0.2s;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #1565c0;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 if st.button("Enviar mensaje"):
     if user_input.strip() != "":
         # Construir historial de mensajes para el agente
