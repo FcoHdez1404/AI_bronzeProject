@@ -19,7 +19,7 @@ chat_agent = AssistantAgent(
     system_message="Eres un asistente útil y conversacional."
 )
 
-st.title("Chat con GPT-3.5-turbo")
+st.title("Chat con GPT-The office")
 
 # Inicializar historial de chat
 if "chat_history" not in st.session_state:
