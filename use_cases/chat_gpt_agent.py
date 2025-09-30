@@ -22,6 +22,10 @@ st.markdown(
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+        color: rgb(105, 6, 6);
+    }}
+    .stMarkdown, .stTextInput, .stTitle, .stSubheader {{
+        color: rgb(105, 6, 6) !important;
     }}
     </style>
     """,
