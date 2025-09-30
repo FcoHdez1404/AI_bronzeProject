@@ -19,58 +19,66 @@ chat_agent = AssistantAgent(
     system_message="Eres un asistente útil y conversacional."
 )
 
-st.title("Chat con GPT-The office")
 
-# Inicializar historial de chat
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+# Dividir la pantalla en dos columnas verticales
+col1, col2 = st.columns(2)
 
-user_input = st.text_input("Escribe tu mensaje:")
+with col1:
+    st.title("Chat con GPT-The office")
+    # Inicializar historial de chat
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
 
-# Agrega este bloque antes de tu st.button
-st.markdown(
-    """
-    <style>
-    div.stButton > button:first-child {
-        background-color: #1E90FF;
-        color: white;
-        border: none;
-        height: 3em;
-        width: 100%;
-        border-radius: 8px;
-        font-size: 1.1em;
-        font-weight: bold;
-        transition: background-color 0.2s;
-    }
-    div.stButton > button:first-child:hover {
-        background-color: #1565c0;
-        color: white;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+    user_input = st.text_input("Escribe tu mensaje:")
 
-if st.button("Enviar mensaje"):
-    if user_input.strip() != "":
-        # Construir historial de mensajes para el agente
-        messages = [{"role": "user", "content": user_input}]
-        # Usar generate_oai_reply o generate_llm_reply según disponibilidad
-        if hasattr(chat_agent, "generate_oai_reply"):
-            response = chat_agent.generate_oai_reply(messages, "User")
-        elif hasattr(chat_agent, "generate_llm_reply"):
-            response = chat_agent.generate_llm_reply(messages, "User")
-        else:
-            response = "El agente no soporta chat directo."
-        # Extraer el texto de la respuesta
-        if isinstance(response, dict) and "content" in response:
-            reply = response["content"]
-        else:
-            reply = str(response)
-        st.session_state.chat_history.append(("Tú", user_input))
-        st.session_state.chat_history.append(("Agente", reply))
+    # Agrega este bloque antes de tu st.button
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            height: 3em;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        div.stButton > button:first-child:hover {
+            background-color: #1565c0;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
-# Mostrar historial de chat
-st.subheader("Conversación:")
-for speaker, msg in st.session_state.chat_history:
-    st.markdown(f"**{speaker}:** {msg}")
+    if st.button("Enviar mensaje"):
+        if user_input.strip() != "":
+            # Construir historial de mensajes para el agente
+            messages = [{"role": "user", "content": user_input}]
+            # Usar generate_oai_reply o generate_llm_reply según disponibilidad
+            if hasattr(chat_agent, "generate_oai_reply"):
+                response = chat_agent.generate_oai_reply(messages, "User")
+            elif hasattr(chat_agent, "generate_llm_reply"):
+                response = chat_agent.generate_llm_reply(messages, "User")
+            else:
+                response = "El agente no soporta chat directo."
+            # Extraer el texto de la respuesta
+            if isinstance(response, dict) and "content" in response:
+                reply = response["content"]
+            else:
+                reply = str(response)
+            st.session_state.chat_history.append(("Tú", user_input))
+            st.session_state.chat_history.append(("Agente", reply))
+
+    # Mostrar historial de chat
+    st.subheader("Conversación:")
+    for speaker, msg in st.session_state.chat_history:
+        st.markdown(f"**{speaker}:** {msg}")
+
+with col2:
+    st.subheader("Información adicional")
+    st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
