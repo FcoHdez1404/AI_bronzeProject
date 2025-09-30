@@ -25,6 +25,10 @@ col1, col2 = st.columns(2)
 
 
 with col1:
+    st.subheader("Información adicional")
+    st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
+
+with col2:
     st.title("Chat con GPT-The office")
     # Inicializar historial de chat
     if "chat_history" not in st.session_state:
@@ -84,7 +88,3 @@ with col1:
     st.subheader("Conversación:")
     for speaker, msg in st.session_state.chat_history:
         st.markdown(f"**{speaker}:** {msg}")
-
-with col2:
-    st.subheader("Información adicional")
-    st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
