@@ -4,16 +4,23 @@ from dotenv import load_dotenv
 import streamlit as st
 from autogen import AssistantAgent
 
-# Fondo con imagen
+# Fondo con imagen usando base64
+import base64
+from pathlib import Path
+
+def get_base64(file_path):
+    return base64.b64encode(Path(file_path).read_bytes()).decode()
+
+img_base64 = get_base64("static/muelitaSmile.jpg")
 st.markdown(
-    """
+    f"""
     <style>
-        .stApp {
-        background-image: url('/static/muelitaSmile.jpg');
+    .stApp {{
+        background-image: url('data:image/jpg;base64,{img_base64}');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-    }
+    }}
     </style>
     """,
     unsafe_allow_html=True
