@@ -23,15 +23,38 @@ chat_agent = AssistantAgent(
 # Dividir la pantalla en dos columnas verticales
 col1, col2 = st.columns(2)
 
+
 with col1:
     st.title("Chat con GPT-The office")
     # Inicializar historial de chat
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
-    user_input = st.text_input("Escribe tu mensaje:")
+    def enviar_mensaje():
+        user_input = st.session_state.get("user_input", "")
+        if user_input.strip() != "":
+            messages = [{"role": "user", "content": user_input}]
+            if hasattr(chat_agent, "generate_oai_reply"):
+                response = chat_agent.generate_oai_reply(messages, "User")
+            elif hasattr(chat_agent, "generate_llm_reply"):
+                response = chat_agent.generate_llm_reply(messages, "User")
+            else:
+                response = "El agente no soporta chat directo."
+            if isinstance(response, dict) and "content" in response:
+                reply = response["content"]
+            else:
+                reply = str(response)
+            st.session_state.chat_history.append(("Tú", user_input))
+            st.session_state.chat_history.append(("Agente", reply))
+            st.session_state.user_input = ""  # Limpiar input
 
-    # Agrega este bloque antes de tu st.button
+    user_input = st.text_input(
+        "Escribe tu mensaje:",
+        value=st.session_state.get("user_input", ""),
+        key="user_input",
+        on_change=enviar_mensaje
+    )
+
     st.markdown(
         """
         <style>
@@ -56,25 +79,8 @@ with col1:
     )
 
     if st.button("Enviar mensaje"):
-        if user_input.strip() != "":
-            # Construir historial de mensajes para el agente
-            messages = [{"role": "user", "content": user_input}]
-            # Usar generate_oai_reply o generate_llm_reply según disponibilidad
-            if hasattr(chat_agent, "generate_oai_reply"):
-                response = chat_agent.generate_oai_reply(messages, "User")
-            elif hasattr(chat_agent, "generate_llm_reply"):
-                response = chat_agent.generate_llm_reply(messages, "User")
-            else:
-                response = "El agente no soporta chat directo."
-            # Extraer el texto de la respuesta
-            if isinstance(response, dict) and "content" in response:
-                reply = response["content"]
-            else:
-                reply = str(response)
-            st.session_state.chat_history.append(("Tú", user_input))
-            st.session_state.chat_history.append(("Agente", reply))
+        enviar_mensaje()
 
-    # Mostrar historial de chat
     st.subheader("Conversación:")
     for speaker, msg in st.session_state.chat_history:
         st.markdown(f"**{speaker}:** {msg}")
