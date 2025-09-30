@@ -9,7 +9,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url('dentistDalia.jpg');
+        background-image: url(/static/muelitaSmile.jpg);
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
