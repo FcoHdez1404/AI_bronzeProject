@@ -1,7 +1,23 @@
+
 import os
 from dotenv import load_dotenv
 import streamlit as st
 from autogen import AssistantAgent
+
+# Fondo con imagen
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url('dentistDalia.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 load_dotenv()
 
@@ -82,7 +98,7 @@ with col2:
         """,
         unsafe_allow_html=True
     )
-
+    
     if st.button("Enviar mensaje"):
         enviar_mensaje()
 
