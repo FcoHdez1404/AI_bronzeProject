@@ -11,7 +11,9 @@ from pathlib import Path
 def get_base64(file_path):
     return base64.b64encode(Path(file_path).read_bytes()).decode()
 
-img_base64 = get_base64(r"C:/Users/DELL/Desktop/chat__gpt_agent_/chat_gpt_agent_version_de_prueba/AI_bronzeProject/static/muelitaSmile.jpg")
+# Ruta robusta para cualquier sistema operativo
+img_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'muelitaSmile.jpg')
+img_base64 = get_base64(img_path)
 st.markdown(
     f"""
     <style>
