@@ -27,7 +27,7 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("Información adicional")
     st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
-    st.image("dentistDal.png", caption="Imagen: dentistDal", use_column_width=True)
+    st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_column_width=True)
 
 with col2:
     st.title("Chat con GPT-The office")
