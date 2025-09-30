@@ -8,8 +8,8 @@ from autogen import AssistantAgent
 st.markdown(
     """
     <style>
-    .stApp {
-        background-image: url(/static/muelitaSmile.jpg);
+        .stApp {
+        background-image: url('/static/muelitaSmile.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
