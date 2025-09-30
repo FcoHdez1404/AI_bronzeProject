@@ -24,7 +24,7 @@ st.markdown(
         background-position: center;
         color: rgb(105, 6, 6);
     }}
-    .stMarkdown, .stTextInput, .stTitle, .stSubheader {{
+    .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {{
         color: rgb(105, 6, 6) !important;
     }}
     </style>
@@ -82,6 +82,17 @@ with col2:
             st.session_state.chat_history.append(("Agente", reply))
             st.session_state.user_input = ""  # Limpiar input
 
+    st.markdown(
+        """
+        <style>
+        label[for='user_input'] {
+            color: rgb(105, 6, 6) !important;
+            font-weight: bold;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
     user_input = st.text_input(
         "Escribe tu mensaje:",
         value=st.session_state.get("user_input", ""),
