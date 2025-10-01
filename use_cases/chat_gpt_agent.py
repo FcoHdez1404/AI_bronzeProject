@@ -108,14 +108,14 @@ st.markdown(
 user_input = st.text_input(
     "Escribe tu mensaje:",
     value=st.session_state.get("user_input", ""),
-            key="user_input",
-            on_change=enviar_mensaje
-        )
+    key="user_input",
+    on_change=enviar_mensaje
+)
 
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
+st.markdown(
+    """
+    <style>
+    div.stButton > button:first-child {
         background-color: #1E90FF;
         color: white;
         border: none;
@@ -125,38 +125,20 @@ user_input = st.text_input(
         font-size: 1.1em;
         font-weight: bold;
         transition: background-color 0.2s;
-        }
-        div.stButton > button:first-child:hover {
+    }
+    div.stButton > button:first-child:hover {
         background-color: #1565c0;
         color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-        if st.button("Enviar mensaje"):
-            enviar_mensaje()
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+if st.button("Enviar mensaje"):
+    enviar_mensaje()
 
-        st.subheader("Conversación:")
-        for speaker, msg in st.session_state.chat_history:
-            st.markdown(f"**{speaker}:** {msg}")
-
-        st.markdown(
-            """
-            "</div></div>", unsafe_allow_html=True) 
-            background-color: #1565c0;
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    
-    if st.button("Enviar mensaje"):
-        enviar_mensaje()
-
-    st.subheader("Conversación:")
-    for speaker, msg in st.session_state.chat_history:
-        st.markdown(f"**{speaker}:** {msg}")
+st.subheader("Conversación:")
+for speaker, msg in st.session_state.chat_history:
+    st.markdown(f"**{speaker}:** {msg}")
 
     st.markdown("</div>", unsafe_allow_html=True)
