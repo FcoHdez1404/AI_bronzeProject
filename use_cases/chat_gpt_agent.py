@@ -141,4 +141,5 @@ st.subheader("Conversación:")
 for speaker, msg in st.session_state.chat_history:
     st.markdown(f"**{speaker}:** {msg}")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+# Cierre correcto de los contenedores flex
+st.markdown("""</div></div>""", unsafe_allow_html=True)
