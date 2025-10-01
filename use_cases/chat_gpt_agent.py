@@ -85,9 +85,9 @@ with col2:
     st.markdown(
         """
         <style>
-        label[for='user_input'] {
+        label[for='user_input'], .st-emotion-cache-1qg05tj {
             color: rgb(105, 6, 6) !important;
-            font-weight: bold;
+            font-weight: bold !important;
         }
         </style>
         """,
