@@ -76,38 +76,38 @@ st.title("Chat con GPT-The office")
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-        def enviar_mensaje():
-            user_input = st.session_state.get("user_input", "")
-            if user_input.strip() != "":
-                messages = [{"role": "user", "content": user_input}]
-                if hasattr(chat_agent, "generate_oai_reply"):
-                    response = chat_agent.generate_oai_reply(messages, "User")
-                elif hasattr(chat_agent, "generate_llm_reply"):
-                    response = chat_agent.generate_llm_reply(messages, "User")
-                else:
-                    response = "El agente no soporta chat directo."
-                if isinstance(response, dict) and "content" in response:
-                    reply = response["content"]
-                else:
-                    reply = str(response)
-                st.session_state.chat_history.append(("Tú", user_input))
-                st.session_state.chat_history.append(("Agente", reply))
-                st.session_state.user_input = ""  # Limpiar input
+def enviar_mensaje():
+    user_input = st.session_state.get("user_input", "")
+    if user_input.strip() != "":
+        messages = [{"role": "user", "content": user_input}]
+        if hasattr(chat_agent, "generate_oai_reply"):
+            response = chat_agent.generate_oai_reply(messages, "User")
+        elif hasattr(chat_agent, "generate_llm_reply"):
+            response = chat_agent.generate_llm_reply(messages, "User")
+        else:
+            response = "El agente no soporta chat directo."
+        if isinstance(response, dict) and "content" in response:
+            reply = response["content"]
+        else:
+            reply = str(response)
+        st.session_state.chat_history.append(("Tú", user_input))
+        st.session_state.chat_history.append(("Agente", reply))
+        st.session_state.user_input = ""  # Limpiar input
 
-        st.markdown(
-            """
-            <style>
-            label[for='user_input'], .st-emotion-cache-1qg05tj {
-                color: rgb(105, 6, 6) !important;
-                font-weight: bold !important;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-        user_input = st.text_input(
-            "Escribe tu mensaje:",
-            value=st.session_state.get("user_input", ""),
+st.markdown(
+    """
+    <style>
+    label[for='user_input'], .st-emotion-cache-1qg05tj {
+        color: rgb(105, 6, 6) !important;
+        font-weight: bold !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+user_input = st.text_input(
+    "Escribe tu mensaje:",
+    value=st.session_state.get("user_input", ""),
             key="user_input",
             on_change=enviar_mensaje
         )
