@@ -24,116 +24,121 @@ st.markdown(
         background-position: center;
         color: rgb(105, 6, 6);
     }}
-    .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {{
-        color: rgb(105, 6, 6) !important;
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+    .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {
 
-load_dotenv()
+        # Contenedor principal flex para manipulación independiente
+        st.markdown(
+            """
+            <style>
+            .main-flex-container {
+                display: flex;
+                flex-direction: row;
+                width: 100vw;
+                height: 100vh;
+                gap: 0;
+            }
+            .main-col1 {
+                flex: 1;
+                padding: 2vw;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: flex-start;
+            }
+            .main-col2 {
+                flex: 1;
+                padding: 2vw;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                justify-content: flex-start;
+            }
+            </style>
+            <div class='main-flex-container'>
+                <div class='main-col1'>
+            """,
+            unsafe_allow_html=True
+        )
 
-# Configuración del modelo
-llm_config = {
-    "model": "gpt-3.5-turbo",
-    "temperature": 0.7,
-    "api_key": os.environ["OPENAI_API_KEY"],
-}
+        # Columna 1
+        st.subheader("Información adicional")
+        st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
+        st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
+        fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
-# Crear el agente de chat
-chat_agent = AssistantAgent(
-    name="Chat_Agent",
-    llm_config=llm_config,
-    system_message="Eres un asistente útil y conversacional."
-)
+        st.markdown("</div><div class='main-col2'>", unsafe_allow_html=True)
 
+        # Columna 2
+        st.title("Chat con GPT-The office")
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
 
-# Dividir la pantalla en dos columnas verticales
-col1, col2 = st.columns(2)
+        def enviar_mensaje():
+            user_input = st.session_state.get("user_input", "")
+            if user_input.strip() != "":
+                messages = [{"role": "user", "content": user_input}]
+                if hasattr(chat_agent, "generate_oai_reply"):
+                    response = chat_agent.generate_oai_reply(messages, "User")
+                elif hasattr(chat_agent, "generate_llm_reply"):
+                    response = chat_agent.generate_llm_reply(messages, "User")
+                else:
+                    response = "El agente no soporta chat directo."
+                if isinstance(response, dict) and "content" in response:
+                    reply = response["content"]
+                else:
+                    reply = str(response)
+                st.session_state.chat_history.append(("Tú", user_input))
+                st.session_state.chat_history.append(("Agente", reply))
+                st.session_state.user_input = ""  # Limpiar input
 
+        st.markdown(
+            """
+            <style>
+            label[for='user_input'], .st-emotion-cache-1qg05tj {
+                color: rgb(105, 6, 6) !important;
+                font-weight: bold !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        user_input = st.text_input(
+            "Escribe tu mensaje:",
+            value=st.session_state.get("user_input", ""),
+            key="user_input",
+            on_change=enviar_mensaje
+        )
 
-with col1:
-    st.subheader("Información adicional")
-    st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
+        st.markdown(
+            """
+            <style>
+            div.stButton > button:first-child {
+                background-color: #1E90FF;
+                color: white;
+                border: none;
+                height: 3em;
+                width: 100%;
+                border-radius: 8px;
+                font-size: 1.1em;
+                font-weight: bold;
+                transition: background-color 0.2s;
+            }
+            div.stButton > button:first-child:hover {
+                background-color: #1565c0;
+                color: white;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        if st.button("Enviar mensaje"):
+            enviar_mensaje()
 
-    st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
-    # Calendario dinámico desplegable
-    fecha_seleccionada = st.date_input("Selecciona una fecha:")
+        st.subheader("Conversación:")
+        for speaker, msg in st.session_state.chat_history:
+            st.markdown(f"**{speaker}:** {msg}")
 
-with col2:
-    # Contenedor alineado a la derecha
-    st.markdown(
-        """
-        <style>
-        .lmn-col-6 {
-            width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-        </style>
-        <div class='chat lmn-col-6'>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.title("Chat con GPT-The office")
-    # Inicializar historial de chat
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-
-    def enviar_mensaje():
-        user_input = st.session_state.get("user_input", "")
-        if user_input.strip() != "":
-            messages = [{"role": "user", "content": user_input}]
-            if hasattr(chat_agent, "generate_oai_reply"):
-                response = chat_agent.generate_oai_reply(messages, "User")
-            elif hasattr(chat_agent, "generate_llm_reply"):
-                response = chat_agent.generate_llm_reply(messages, "User")
-            else:
-                response = "El agente no soporta chat directo."
-            if isinstance(response, dict) and "content" in response:
-                reply = response["content"]
-            else:
-                reply = str(response)
-            st.session_state.chat_history.append(("Tú", user_input))
-            st.session_state.chat_history.append(("Agente", reply))
-            st.session_state.user_input = ""  # Limpiar input
-
-    st.markdown(
-        """
-        <style>
-        label[for='user_input'], .st-emotion-cache-1qg05tj {
-            color: rgb(105, 6, 6) !important;
-            font-weight: bold !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    user_input = st.text_input(
-        "Escribe tu mensaje:",
-        value=st.session_state.get("user_input", ""),
-        key="user_input",
-        on_change=enviar_mensaje
-    )
-
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
-            background-color: #1E90FF;
-            color: white;
-            border: none;
-            height: 3em;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        div.stButton > button:first-child:hover {
+        st.markdown("</div></div>", unsafe_allow_html=True)
             background-color: #1565c0;
             color: white;
         }
