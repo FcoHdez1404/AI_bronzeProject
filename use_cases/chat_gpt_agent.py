@@ -63,20 +63,18 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-        )
+    # Columna 1
+st.subheader("Información adicional")
+st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
+st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
+fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
-        # Columna 1
-        st.subheader("Información adicional")
-        st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
-        st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
-        fecha_seleccionada = st.date_input("Selecciona una fecha:")
+st.markdown("</div><div class='main-col2'>", unsafe_allow_html=True)
 
-        st.markdown("</div><div class='main-col2'>", unsafe_allow_html=True)
-
-        # Columna 2
-        st.title("Chat con GPT-The office")
-        if "chat_history" not in st.session_state:
-            st.session_state.chat_history = []
+# Columna 2
+st.title("Chat con GPT-The office")
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
         def enviar_mensaje():
             user_input = st.session_state.get("user_input", "")
