@@ -65,7 +65,15 @@ with col2:
     # Contenedor alineado a la derecha
     st.markdown(
         """
-        <div style='display: flex; flex-direction: column; align-items: flex-end;'>
+        <style>
+        .lmn-col-12 {
+            width: 100% !important;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        </style>
+        <div class='lmn-col-12'>
         """,
         unsafe_allow_html=True
     )
