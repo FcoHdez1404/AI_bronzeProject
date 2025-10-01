@@ -51,25 +51,28 @@ st.markdown(
         justify-content: flex-start;
     }}
     </style>
+    <div class='chat lmn-col-6'>
     """,
     unsafe_allow_html=True
 )
 
 # Contenedor principal flex para manipulación independiente
+# Abrir el contenedor principal y columna 1
 st.markdown(
     """
     <div class='main-flex-container'>
         <div class='main-col1'>
+            <div id='info-adicional'>
     """,
     unsafe_allow_html=True
 )
-    # Columna 1
+# Todo el contenido de la columna 1 dentro del div
 st.subheader("Información adicional")
 st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
 st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
 fecha_seleccionada = st.date_input("Selecciona una fecha:")
-
-st.markdown("</div><div class='main-col2'>", unsafe_allow_html=True)
+# Cerrar el div de contenido adicional y abrir columna 2
+st.markdown("""</div></div><div class='main-col2'>""", unsafe_allow_html=True)
 
 # Columna 2
 st.title("Chat con GPT-The office")
