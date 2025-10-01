@@ -14,6 +14,7 @@ def get_base64(file_path):
 # Ruta robusta para cualquier sistema operativo
 img_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'muelitaSmile.jpg')
 img_base64 = get_base64(img_path)
+st.markdown(
     f"""
     <style>
     .stApp {{
