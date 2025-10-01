@@ -66,22 +66,14 @@ with col2:
     st.markdown(
         """
         <style>
-        .lmn-col-xs-12.lmn-col-sm-12.lmn-col-lg-12.lmn-col-xl-12.lmn-col-2xl-12 {
-            width: 100vw !important;
-            max-width: 100vw !important;
-            position: fixed;
-            top: 0;
-            right: 0;
-            height: 100vh;
+        .lmn-col-12 {
+            width: 100% !important;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            justify-content: flex-start;
-            z-index: 999;
-            background: transparent;
         }
         </style>
-        <div class='lmn-col-xs-12 lmn-col-sm-12 lmn-col-lg-12 lmn-col-xl-12 lmn-col-2xl-12'>
+        <div class='lmn-col-12'>
         """,
         unsafe_allow_html=True
     )
