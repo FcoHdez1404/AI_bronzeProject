@@ -141,7 +141,9 @@ user_input = st.text_input(
         for speaker, msg in st.session_state.chat_history:
             st.markdown(f"**{speaker}:** {msg}")
 
-        st.markdown("</div></div>", unsafe_allow_html=True)
+        st.markdown(
+            """
+            "</div></div>", unsafe_allow_html=True) 
             background-color: #1565c0;
             color: white;
         }
