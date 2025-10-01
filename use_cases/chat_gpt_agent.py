@@ -66,14 +66,14 @@ with col2:
     st.markdown(
         """
         <style>
-        .lmn-col-12 {
+        .lmn-col-6 {
             width: 100% !important;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
         }
         </style>
-        <div class='lmn-col-12'>
+        <div class='chat lmn-col-6'>
         """,
         unsafe_allow_html=True
     )
