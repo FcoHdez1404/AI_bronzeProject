@@ -14,7 +14,6 @@ def get_base64(file_path):
 # Ruta robusta para cualquier sistema operativo
 img_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'muelitaSmile.jpg')
 img_base64 = get_base64(img_path)
-st.markdown(
     f"""
     <style>
     .stApp {{
@@ -24,40 +23,45 @@ st.markdown(
         background-position: center;
         color: rgb(105, 6, 6);
     }}
-    .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {
+    .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {{
+        color: rgb(105, 6, 6) !important;
+    }}
+    .main-flex-container {{
+        display: flex;
+        flex-direction: row;
+        width: 100vw;
+        height: 100vh;
+        gap: 0;
+    }}
+    .main-col1 {{
+        flex: 1;
+        padding: 2vw;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }}
+    .main-col2 {{
+        flex: 1;
+        padding: 2vw;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-start;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-        # Contenedor principal flex para manipulación independiente
-        st.markdown(
-            """
-            <style>
-            .main-flex-container {
-                display: flex;
-                flex-direction: row;
-                width: 100vw;
-                height: 100vh;
-                gap: 0;
-            }
-            .main-col1 {
-                flex: 1;
-                padding: 2vw;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-            }
-            .main-col2 {
-                flex: 1;
-                padding: 2vw;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                justify-content: flex-start;
-            }
-            </style>
-            <div class='main-flex-container'>
-                <div class='main-col1'>
-            """,
-            unsafe_allow_html=True
+# Contenedor principal flex para manipulación independiente
+st.markdown(
+    """
+    <div class='main-flex-container'>
+        <div class='main-col1'>
+    """,
+    unsafe_allow_html=True
+)
         )
 
         # Columna 1
