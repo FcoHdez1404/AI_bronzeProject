@@ -77,7 +77,8 @@ with col2:
                 box-sizing: border-box;
             }
         </style>
-        <div class='chat lmn-col-6'>
+        <div class='chat lmn-col-6' style='display: flex; flex-direction: row; align-items: flex-start;'>
+            <div style='flex:1;'>
         """,
         unsafe_allow_html=True
     )
