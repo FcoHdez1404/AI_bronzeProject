@@ -65,17 +65,12 @@ with col2:
     st.markdown(
         """
         <style>
-            .lmn-col-6 {
-                flex: 1;
-                padding: 2vw;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                justify-content: flex-start;
-                width: 100%;
-                min-height: 100vh;
-                box-sizing: border-box;
-            }
+        .lmn-col-6 {
+            width: 100% !important;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
         </style>
         <div class='chat lmn-col-6'>
         """,
