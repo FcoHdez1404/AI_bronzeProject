@@ -65,9 +65,9 @@ with col2:
     st.markdown(
         """
         <style>
-            .lmn-col-6 {
-                flex: 1;
-                padding: 2vw;
+            .lmn-col-6, .lmn-col-12 {
+                flex: 1 1 0;
+                padding: 40px 25px 40px 25px;
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
@@ -75,6 +75,8 @@ with col2:
                 width: 100%;
                 min-height: 100vh;
                 box-sizing: border-box;
+                background: rgba(255,255,255,0.85);
+                border-radius: 16px;
             }
         </style>
         <div class='chat lmn-col-6' style='display: flex; flex-direction: row; align-items: flex-start;'>
