@@ -61,22 +61,6 @@ with col1:
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
 with col2:
-    # Contenedor alineado a la derecha
-    st.markdown(
-        """
-        <style>
-        .lmn-col-6 {
-            width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-        </style>
-        <div class='chat lmn-col-6'>
-        """,
-        unsafe_allow_html=True
-    )
-
     st.title("Chat con GPT-The office")
     # Inicializar historial de chat
     if "chat_history" not in st.session_state:
@@ -149,3 +133,19 @@ with col2:
         st.markdown(f"**{speaker}:** {msg}")
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+    # Contenedor alineado a la derecha
+    st.markdown(
+        """
+        <style>
+        .lmn-col-6 {
+            width: 100% !important;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        </style>
+        <div class='chat lmn-col-6'>
+        """,
+        unsafe_allow_html=True
+    )
