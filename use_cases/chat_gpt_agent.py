@@ -27,7 +27,7 @@ st.markdown(
         color: rgb(105, 6, 6) !important;
     }}
     .main-grid-container {
-    display: grid;
+        display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 40px;
         width: 100vw;
