@@ -49,6 +49,8 @@ chat_agent = AssistantAgent(
 
 
 # Dividir la pantalla en dos columnas verticales
+self.grid_columnconfigure((0, 1), weight=1)
+self.grid_rowconfigure(0, weight=1)
 col1, col2 = st.columns(2)
 
 
