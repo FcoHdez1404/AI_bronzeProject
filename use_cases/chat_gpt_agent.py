@@ -26,6 +26,32 @@ st.markdown(
     .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {{
         color: rgb(105, 6, 6) !important;
     }}
+   .main-grid-container {{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        width: 100vw;
+        min-height: 100vh;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 40px 0;
+    }}
+    .main-col1 {{ 
+        background: rgba(255,255,255,0.85);
+        border-radius: 16px;
+        padding: 32px 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        min-width: 340px;
+        max-width: 400px;
+    }}
+    .main-col2 {{ 
+        background: rgba(255,255,255,0.85);
+        border-radius: 16px;
+        padding: 32px 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        min-width: 340px;
+        max-width: 600px;
+    }}
     </style>
     """,
     unsafe_allow_html=True
@@ -51,8 +77,32 @@ chat_agent = AssistantAgent(
 # Dividir la pantalla en dos columnas verticales
 col1, col2 = st.columns(2)
 
+st.markdown("""
+<div class='main-grid-container'>
+    <div class='main-col1'>
+        <h2>Información adicional</h2>
+        <p style='color:#1565c0;'>Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.</p>
+        <img src='dentistDalia.jpg' alt='Imagen: dentistDal' style='width:100%;border-radius:12px;margin-bottom:16px;'>
+        <div style='margin-top:16px;'>
+            <label style='font-weight:bold;'>Selecciona una fecha:</label><br>
+        </div>
+    </div>
+    <div class='main-col2'>
+        <h1 id='chat-con-gpt-the-office' style='color:#690606;font-size:44px;font-family:Source Sans Pro,sans-serif;padding:20px 0 16px 0;margin:0;'>Chat con GPT-The office</h1>
+        <div style='margin-top:24px;'>
+            <label for='user_input' style='color:#690606;font-weight:bold;'>Escribe tu mensaje:</label>
+        </div>
+        <h3 style='margin-top:32px;'>Conversación:</h3>
+        <div>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-with col1:
+# Renderizar componentes interactivos dentro del grid usando Streamlit
+with st.container():
+    grid_col1, grid_col2 = st.columns([1,1])
+with grid_col1:
     st.subheader("Información adicional")
     st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
 
@@ -60,7 +110,7 @@ with col1:
     # Calendario dinámico desplegable
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
-with col2:
+with grid_col2:
     # Contenedor alineado a la derecha
     st.markdown(
         """
