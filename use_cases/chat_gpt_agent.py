@@ -106,6 +106,12 @@ with st.container():
     with grid_col1:
         st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
         fecha_seleccionada = st.date_input("Selecciona una fecha:")
+         user_input = st.text_input(
+            "Escribe tu mensaje:",
+            value=st.session_state.get("user_input", ""),
+            key="user_input",
+            on_change=enviar_mensaje
+        )
     with grid_col2:
         if "chat_history" not in st.session_state:
             st.session_state.chat_history = []
@@ -126,12 +132,7 @@ with st.container():
                 st.session_state.chat_history.append(("Tú", user_input))
                 st.session_state.chat_history.append(("Agente", reply))
                 st.session_state.user_input = ""  # Limpiar input
-        user_input = st.text_input(
-            "Escribe tu mensaje:",
-            value=st.session_state.get("user_input", ""),
-            key="user_input",
-            on_change=enviar_mensaje
-        )
+       
         if st.button("Enviar mensaje"):
             enviar_mensaje()
         st.subheader("Conversación:")
