@@ -2,4 +2,4 @@ python-dotenv
 httpx
 autogen
 pandas
-tkinter
+streamlit

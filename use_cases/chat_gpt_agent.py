@@ -1,29 +1,151 @@
-import tkinter as tk
-from tkinter import ttk
+import os
+from dotenv import load_dotenv
+import streamlit as st
+from autogen import AssistantAgent
 
-root = tk.Tk()
-root.title("Interfaz con Tkinter")
-root.geometry("800x400")
+# Fondo con imagen usando base64
+import base64
+from pathlib import Path
 
-# Frame izquierdo
-frame_left = ttk.Frame(root, width=400, padding=20)
-frame_left.pack(side="left", fill="y")
+def get_base64(file_path):
+    return base64.b64encode(Path(file_path).read_bytes()).decode()
 
-ttk.Label(frame_left, text="Información adicional", font=("Arial", 18, "bold")).pack(anchor="w")
-ttk.Label(frame_left, text="Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.", wraplength=350).pack(anchor="w", pady=10)
-ttk.Label(frame_left, text="Selecciona una fecha:", font=("Arial", 12, "bold")).pack(anchor="w", pady=10)
-fecha = ttk.Entry(frame_left)
-fecha.pack(anchor="w")
+# Ruta robusta para cualquier sistema operativo
+img_path = os.path.join(os.path.dirname(__file__), '..', 'static', 'muelitaSmile.jpg')
+img_base64 = get_base64(img_path)
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url('data:image/jpg;base64,{img_base64}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: rgb(105, 6, 6);
+    }}
+    .stMarkdown, .stTextInput, .stButton, .stTitle, .stSubheader {{
+        color: rgb(105, 6, 6) !important;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Frame derecho
-frame_right = ttk.Frame(root, width=400, padding=20)
-frame_right.pack(side="right", fill="both", expand=True)
+load_dotenv()
 
-ttk.Label(frame_right, text="Chat con GPT-The office", font=("Arial", 18, "bold")).pack(anchor="w")
-ttk.Label(frame_right, text="Escribe tu mensaje:").pack(anchor="w", pady=10)
-mensaje = ttk.Entry(frame_right)
-mensaje.pack(anchor="w", fill="x")
-ttk.Button(frame_right, text="Enviar mensaje").pack(anchor="w", pady=10)
-ttk.Label(frame_right, text="Conversación:", font=("Arial", 14, "bold")).pack(anchor="w", pady=10)
+# Configuración del modelo
+llm_config = {
+    "model": "gpt-3.5-turbo",
+    "temperature": 0.7,
+    "api_key": os.environ["OPENAI_API_KEY"],
+}
 
-root.mainloop()
+# Crear el agente de chat
+chat_agent = AssistantAgent(
+    name="Chat_Agent",
+    llm_config=llm_config,
+    system_message="Eres un asistente útil y conversacional."
+)
+
+
+# Dividir la pantalla en dos columnas verticales
+col1, col2 = st.columns(2)
+
+
+with col1:
+    st.subheader("Información adicional")
+    st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
+
+    st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
+    # Calendario dinámico desplegable
+    fecha_seleccionada = st.date_input("Selecciona una fecha:")
+
+with col2:
+    # Contenedor alineado a la derecha
+    st.markdown(
+        """
+        <style>
+        .lmn-col-6 {
+            width: 100% !important;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        </style>
+        <div class='chat lmn-col-6'>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.title("Chat con GPT-The office")
+    # Inicializar historial de chat
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+
+    def enviar_mensaje():
+        user_input = st.session_state.get("user_input", "")
+        if user_input.strip() != "":
+            messages = [{"role": "user", "content": user_input}]
+            if hasattr(chat_agent, "generate_oai_reply"):
+                response = chat_agent.generate_oai_reply(messages, "User")
+            elif hasattr(chat_agent, "generate_llm_reply"):
+                response = chat_agent.generate_llm_reply(messages, "User")
+            else:
+                response = "El agente no soporta chat directo."
+            if isinstance(response, dict) and "content" in response:
+                reply = response["content"]
+            else:
+                reply = str(response)
+            st.session_state.chat_history.append(("Tú", user_input))
+            st.session_state.chat_history.append(("Agente", reply))
+            st.session_state.user_input = ""  # Limpiar input
+
+    st.markdown(
+        """
+        <style>
+        label[for='user_input'], .st-emotion-cache-1qg05tj {
+            color: rgb(105, 6, 6) !important;
+            font-weight: bold !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    user_input = st.text_input(
+        "Escribe tu mensaje:",
+        value=st.session_state.get("user_input", ""),
+        key="user_input",
+        on_change=enviar_mensaje
+    )
+
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            height: 3em;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        div.stButton > button:first-child:hover {
+            background-color: #1565c0;
+            color: white;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    if st.button("Enviar mensaje"):
+        enviar_mensaje()
+
+    st.subheader("Conversación:")
+    for speaker, msg in st.session_state.chat_history:
+        st.markdown(f"**{speaker}:** {msg}")
+
+    st.markdown("</div>", unsafe_allow_html=True)
