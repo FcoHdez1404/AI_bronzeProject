@@ -7,7 +7,6 @@ from autogen import AssistantAgent
 import base64
 from pathlib import Path
 
-with st.container():  
 def get_base64(file_path):
     return base64.b64encode(Path(file_path).read_bytes()).decode()
 
