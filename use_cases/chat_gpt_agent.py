@@ -106,7 +106,7 @@ with st.container():
     with grid_col1:
         st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
         fecha_seleccionada = st.date_input("Selecciona una fecha:")
-         user_input = st.text_input(
+        user_input = st.text_input(
             "Escribe tu mensaje:",
             value=st.session_state.get("user_input", ""),
             key="user_input",
