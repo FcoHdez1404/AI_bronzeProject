@@ -77,6 +77,7 @@ chat_agent = AssistantAgent(
 # Dividir la pantalla en dos columnas verticales
 col1, col2 = st.columns(2)
 
+
 st.markdown("""
 <div class='main-grid-container'>
     <div class='main-col1'>
@@ -85,25 +86,57 @@ st.markdown("""
         <img src='dentistDalia.jpg' alt='Imagen: dentistDal' style='width:100%;border-radius:12px;margin-bottom:16px;'>
         <div style='margin-top:16px;'>
             <label style='font-weight:bold;'>Selecciona una fecha:</label><br>
-            {fecha_seleccionada}
         </div>
     </div>
     <div class='main-col2'>
         <h1 id='chat-con-gpt-the-office' style='color:#690606;font-size:44px;font-family:Source Sans Pro,sans-serif;padding:20px 0 16px 0;margin:0;'>Chat con GPT-The office</h1>
         <div style='margin-top:24px;'>
             <label for='user_input' style='color:#690606;font-weight:bold;'>Escribe tu mensaje:</label>
-            {user_input}
-            <div style='margin-top:12px;'>
-                <button style='background-color:#1E90FF;color:white;border:none;height:3em;width:100%;border-radius:8px;font-size:1.1em;font-weight:bold;transition:background-color 0.2s;'>Enviar mensaje</button>
-            </div>
         </div>
         <h3 style='margin-top:32px;'>Conversación:</h3>
         <div>
-            {chat_history_html}
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+# Renderizar componentes interactivos dentro del grid usando Streamlit
+with st.container():
+    grid_col1, grid_col2 = st.columns([1,1])
+    with grid_col1:
+        st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
+        fecha_seleccionada = st.date_input("Selecciona una fecha:")
+    with grid_col2:
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
+        def enviar_mensaje():
+            user_input = st.session_state.get("user_input", "")
+            if user_input.strip() != "":
+                messages = [{"role": "user", "content": user_input}]
+                if hasattr(chat_agent, "generate_oai_reply"):
+                    response = chat_agent.generate_oai_reply(messages, "User")
+                elif hasattr(chat_agent, "generate_llm_reply"):
+                    response = chat_agent.generate_llm_reply(messages, "User")
+                else:
+                    response = "El agente no soporta chat directo."
+                if isinstance(response, dict) and "content" in response:
+                    reply = response["content"]
+                else:
+                    reply = str(response)
+                st.session_state.chat_history.append(("Tú", user_input))
+                st.session_state.chat_history.append(("Agente", reply))
+                st.session_state.user_input = ""  # Limpiar input
+        user_input = st.text_input(
+            "Escribe tu mensaje:",
+            value=st.session_state.get("user_input", ""),
+            key="user_input",
+            on_change=enviar_mensaje
+        )
+        if st.button("Enviar mensaje"):
+            enviar_mensaje()
+        st.subheader("Conversación:")
+        for speaker, msg in st.session_state.chat_history:
+            st.markdown(f"**{speaker}:** {msg}")
 
 # Renderizar componentes dinámicos fuera del HTML para mantener funcionalidad Streamlit
 fecha_seleccionada = st.date_input("Selecciona una fecha:")
@@ -113,8 +146,32 @@ user_input = st.text_input(
     key="user_input",
     on_change=lambda: enviar_mensaje()
 )
+
+st.markdown(
+    """
+    <style>
+    div.stButton > button:first-child {
+        background-color: #1E90FF;
+        color: white;
+        border: none;
+        height: 3em;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 1.1em;
+        font-weight: bold;
+        transition: background-color 0.2s;
+    }
+    div.stButton > button:first-child:hover {
+        background-color: #1565c0;
+        color: white;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 if st.button("Enviar mensaje"):
     enviar_mensaje()
+
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 def enviar_mensaje():
