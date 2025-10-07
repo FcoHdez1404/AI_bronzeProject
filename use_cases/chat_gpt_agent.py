@@ -79,7 +79,6 @@ with col1:
     # Calendario dinámico desplegable
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
-with col2:
 if st.session_state.show_col2:
     with col2:
         # Contenedor alineado a la derecha
