@@ -7,6 +7,7 @@ from autogen import AssistantAgent
 import base64
 from pathlib import Path
 
+with st.container():  
 def get_base64(file_path):
     return base64.b64encode(Path(file_path).read_bytes()).decode()
 
@@ -46,8 +47,6 @@ chat_agent = AssistantAgent(
     llm_config=llm_config,
     system_message="Eres un asistente útil y conversacional."
 )
-
-with st.container():
 
 # Dividir la pantalla en dos columnas verticales
 col1, col2 = st.columns(2)
