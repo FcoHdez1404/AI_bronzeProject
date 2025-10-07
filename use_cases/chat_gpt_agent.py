@@ -68,11 +68,11 @@ hide_icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" x
 
 col1.markdown("<div style='display: flex; justify-content: flex-end;'>", unsafe_allow_html=True)
 if st.session_state.show_col2:
-    if col1.button("Ocultar chat", key="hide_col2", help="Ocultar chat", args=None):
+    if col1.button("Hide chat", key="hide_col2", help="Ocultar chat", args=None):
         st.session_state.show_col2 = False
     col1.markdown(hide_icon_svg, unsafe_allow_html=True)
 else:
-    if col1.button("Mostrar chat", key="show_col2", help="Mostrar chat", args=None):
+    if col1.button("Show chat", key="show_col2", help="Mostrar chat", args=None):
         st.session_state.show_col2 = True
     col1.markdown(icon_svg, unsafe_allow_html=True)
 col1.markdown("</div>", unsafe_allow_html=True)
