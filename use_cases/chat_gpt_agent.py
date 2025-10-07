@@ -47,14 +47,16 @@ chat_agent = AssistantAgent(
     system_message="Eres un asistente útil y conversacional."
 )
 
-with st.container():
+
+col1, col2 = st.columns([1, 1])
+
+with col1:
     st.subheader("Información adicional")
     st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
-
     st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
-    # Calendario dinámico desplegable
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
-    # Contenedor alineado a la derecha
+
+with col2:
     st.markdown(
         """
         <style>
@@ -64,14 +66,31 @@ with st.container():
             flex-direction: column;
             align-items: flex-end;
         }
+        label[for='user_input'], .st-emotion-cache-1qg05tj {
+            color: rgb(105, 6, 6) !important;
+            font-weight: bold !important;
+        }
+        div.stButton > button:first-child {
+            background-color: #1E90FF;
+            color: white;
+            border: none;
+            height: 3em;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        div.stButton > button:first-child:hover {
+            background-color: #1565c0;
+            color: white;
+        }
         </style>
         <div class='chat lmn-col-6'>
         """,
         unsafe_allow_html=True
     )
-
     st.title("Chat con GPT-The office")
-    # Inicializar historial de chat
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
@@ -93,52 +112,15 @@ with st.container():
             st.session_state.chat_history.append(("Agente", reply))
             st.session_state.user_input = ""  # Limpiar input
 
-    st.markdown(
-        """
-        <style>
-        label[for='user_input'], .st-emotion-cache-1qg05tj {
-            color: rgb(105, 6, 6) !important;
-            font-weight: bold !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
     user_input = st.text_input(
         "Escribe tu mensaje:",
         value=st.session_state.get("user_input", ""),
         key="user_input",
         on_change=enviar_mensaje
     )
-
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
-            background-color: #1E90FF;
-            color: white;
-            border: none;
-            height: 3em;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        div.stButton > button:first-child:hover {
-            background-color: #1565c0;
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    
     if st.button("Enviar mensaje"):
         enviar_mensaje()
-
     st.subheader("Conversación:")
     for speaker, msg in st.session_state.chat_history:
         st.markdown(f"**{speaker}:** {msg}")
-
     st.markdown("</div>", unsafe_allow_html=True)
