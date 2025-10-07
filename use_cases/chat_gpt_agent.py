@@ -105,7 +105,6 @@ with st.container():
     grid_col1, grid_col2 = st.columns([1,1])
     with grid_col1:
         st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
-        fecha_seleccionada = st.date_input("Selecciona una fecha:")
     with grid_col2:
         if "chat_history" not in st.session_state:
             st.session_state.chat_history = []
