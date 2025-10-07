@@ -51,6 +51,25 @@ chat_agent = AssistantAgent(
 # Dividir la pantalla en dos columnas verticales
 col1, col2 = st.columns(2)
 
+# Estado para mostrar/ocultar col2
+if "show_col2" not in st.session_state:
+    st.session_state.show_col2 = True
+
+# Botón con ícono para mostrar/ocultar col2
+icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="#1E90FF"/><path d="M16 10V22" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M10 16H22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>'''
+hide_icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="#1E90FF"/><rect x="10" y="15" width="12" height="2" rx="1" fill="white"/></svg>'''
+
+col1.markdown("<div style='display: flex; justify-content: flex-end;'>", unsafe_allow_html=True)
+if st.session_state.show_col2:
+    if col1.button("Ocultar chat", key="hide_col2", help="Ocultar chat", args=None):
+        st.session_state.show_col2 = False
+    col1.markdown(hide_icon_svg, unsafe_allow_html=True)
+else:
+    if col1.button("Mostrar chat", key="show_col2", help="Mostrar chat", args=None):
+        st.session_state.show_col2 = True
+    col1.markdown(icon_svg, unsafe_allow_html=True)
+col1.markdown("</div>", unsafe_allow_html=True)
+
 
 with col1:
     st.subheader("Información adicional")
@@ -61,91 +80,93 @@ with col1:
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
 with col2:
-    # Contenedor alineado a la derecha
-    st.markdown(
-        """
-        <style>
-        .lmn-col-6 {
-            width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-        </style>
-        <div class='chat lmn-col-6'>
-        """,
-        unsafe_allow_html=True
-    )
+if st.session_state.show_col2:
+    with col2:
+        # Contenedor alineado a la derecha
+        st.markdown(
+            """
+            <style>
+            .lmn-col-6 {
+                width: 100% !important;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+            </style>
+            <div class='chat lmn-col-6'>
+            """,
+            unsafe_allow_html=True
+        )
 
-    st.title("Chat con GPT-The office")
-    # Inicializar historial de chat
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+        st.title("Chat con GPT-The office")
+        # Inicializar historial de chat
+        if "chat_history" not in st.session_state:
+            st.session_state.chat_history = []
 
-    def enviar_mensaje():
-        user_input = st.session_state.get("user_input", "")
-        if user_input.strip() != "":
-            messages = [{"role": "user", "content": user_input}]
-            if hasattr(chat_agent, "generate_oai_reply"):
-                response = chat_agent.generate_oai_reply(messages, "User")
-            elif hasattr(chat_agent, "generate_llm_reply"):
-                response = chat_agent.generate_llm_reply(messages, "User")
-            else:
-                response = "El agente no soporta chat directo."
-            if isinstance(response, dict) and "content" in response:
-                reply = response["content"]
-            else:
-                reply = str(response)
-            st.session_state.chat_history.append(("Tú", user_input))
-            st.session_state.chat_history.append(("Agente", reply))
-            st.session_state.user_input = ""  # Limpiar input
+        def enviar_mensaje():
+            user_input = st.session_state.get("user_input", "")
+            if user_input.strip() != "":
+                messages = [{"role": "user", "content": user_input}]
+                if hasattr(chat_agent, "generate_oai_reply"):
+                    response = chat_agent.generate_oai_reply(messages, "User")
+                elif hasattr(chat_agent, "generate_llm_reply"):
+                    response = chat_agent.generate_llm_reply(messages, "User")
+                else:
+                    response = "El agente no soporta chat directo."
+                if isinstance(response, dict) and "content" in response:
+                    reply = response["content"]
+                else:
+                    reply = str(response)
+                st.session_state.chat_history.append(("Tú", user_input))
+                st.session_state.chat_history.append(("Agente", reply))
+                st.session_state.user_input = ""  # Limpiar input
 
-    st.markdown(
-        """
-        <style>
-        label[for='user_input'], .st-emotion-cache-1qg05tj {
-            color: rgb(105, 6, 6) !important;
-            font-weight: bold !important;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    user_input = st.text_input(
-        "Escribe tu mensaje:",
-        value=st.session_state.get("user_input", ""),
-        key="user_input",
-        on_change=enviar_mensaje
-    )
+        st.markdown(
+            """
+            <style>
+            label[for='user_input'], .st-emotion-cache-1qg05tj {
+                color: rgb(105, 6, 6) !important;
+                font-weight: bold !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        user_input = st.text_input(
+            "Escribe tu mensaje:",
+            value=st.session_state.get("user_input", ""),
+            key="user_input",
+            on_change=enviar_mensaje
+        )
 
-    st.markdown(
-        """
-        <style>
-        div.stButton > button:first-child {
-            background-color: #1E90FF;
-            color: white;
-            border: none;
-            height: 3em;
-            width: 100%;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.2s;
-        }
-        div.stButton > button:first-child:hover {
-            background-color: #1565c0;
-            color: white;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-    
-    if st.button("Enviar mensaje"):
-        enviar_mensaje()
+        st.markdown(
+            """
+            <style>
+            div.stButton > button:first-child {
+                background-color: #1E90FF;
+                color: white;
+                border: none;
+                height: 3em;
+                width: 100%;
+                border-radius: 8px;
+                font-size: 1.1em;
+                font-weight: bold;
+                transition: background-color 0.2s;
+            }
+            div.stButton > button:first-child:hover {
+                background-color: #1565c0;
+                color: white;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        if st.button("Enviar mensaje"):
+            enviar_mensaje()
 
-    st.subheader("Conversación:")
-    for speaker, msg in st.session_state.chat_history:
-        st.markdown(f"**{speaker}:** {msg}")
+        st.subheader("Conversación:")
+        for speaker, msg in st.session_state.chat_history:
+            st.markdown(f"**{speaker}:** {msg}")
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
