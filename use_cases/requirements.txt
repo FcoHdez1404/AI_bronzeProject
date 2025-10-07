@@ -3,3 +3,4 @@ httpx
 autogen
 pandas
 streamlit
+tkinter
