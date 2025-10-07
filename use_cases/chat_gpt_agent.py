@@ -47,19 +47,13 @@ chat_agent = AssistantAgent(
     system_message="Eres un asistente útil y conversacional."
 )
 
-# Dividir la pantalla en dos columnas verticales
-col1, col2 = st.columns(2)
-
-
-with col1:
+with st.container():
     st.subheader("Información adicional")
     st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
 
     st.image("dentistDalia.jpg", caption="Imagen: dentistDal", use_container_width=True)
     # Calendario dinámico desplegable
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
-
-with col2:
     # Contenedor alineado a la derecha
     st.markdown(
         """
