@@ -48,8 +48,8 @@ chat_agent = AssistantAgent(
 )
 
 
-# Dividir la pantalla en dos columnas verticales
-col1, col2 = st.columns(2)
+# Dividir la pantalla en tres columnas verticales
+col1, col2, col3 = st.columns(3)
 
 
 with col1:
@@ -61,6 +61,9 @@ with col1:
     fecha_seleccionada = st.date_input("Selecciona una fecha:")
 
 with col2:
+    st.write("aqui se va un espacio de pruebas")
+
+with col3:
     # Contenedor alineado a la derecha
     st.markdown(
         """
