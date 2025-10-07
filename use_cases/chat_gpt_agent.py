@@ -68,14 +68,18 @@ with col3:
     st.markdown(
         """
         <style>
-        .lmn-col-6 {
-            width: 100% !important;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+        .lmn-col-10 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            width: 100vw;
+            min-height: 100vh;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 0;
         }
         </style>
-        <div class='chat lmn-col-6'>
+        <div class='chat lmn-col-10'>
         """,
         unsafe_allow_html=True
     )
