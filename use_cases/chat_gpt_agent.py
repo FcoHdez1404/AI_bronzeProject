@@ -101,8 +101,8 @@ st.markdown("""
 
 # Renderizar componentes interactivos dentro del grid usando Streamlit
 with st.container():
-    main_col1, grid_col2 = st.columns([1,1])
-with main_col1:
+    main-col1, grid_col2 = st.columns([1,1])
+with main-col1:
     st.subheader("Información adicional")
     st.write("Aquí puedes mostrar datos, instrucciones, o cualquier otro contenido que desees.")
 
@@ -117,7 +117,7 @@ with grid_col2:
         <style>
         .lmn-col-6 {
             width: 100% !important;
-            display: flex;
+            display: grid;
             flex-direction: column;
             align-items: flex-end;
         }
