@@ -87,7 +87,7 @@ if st.session_state.show_col2:
             <style>
             .lmn-col-6 {
                 width: 100% !important;
-                display: flex;
+                display: grid;
                 flex-direction: column;
                 align-items: flex-end;
             }
