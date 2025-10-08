@@ -1,6 +1,3 @@
-estructura de chat con hide y show_col2
-
-
 import os
 from dotenv import load_dotenv
 import streamlit as st
