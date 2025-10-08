@@ -56,16 +56,16 @@ if "show_col2" not in st.session_state:
     st.session_state.show_col2 = True
 
 # Botón con ícono para mostrar/ocultar col2
-icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>'''
-hide_icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"></svg>'''
+icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="#1E90FF"/><path d="M16 10V22" stroke="white" stroke-width="2" stroke-linecap="round"/><path d="M10 16H22" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>'''
+hide_icon_svg = '''<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="16" fill="#1E90FF"/><rect x="10" y="15" width="12" height="2" rx="1" fill="white"/></svg>'''
 
 col1.markdown("<div style='display: flex; justify-content: flex-end;'>", unsafe_allow_html=True)
 if st.session_state.show_col2:
-    if col1.button("-chat", key="hide_col2", help="Ocultar chat", args=None):
+    if col1.button("Ocultar chat", key="hide_col2", help="Ocultar chat", args=None):
         st.session_state.show_col2 = False
     col1.markdown(hide_icon_svg, unsafe_allow_html=True)
 else:
-    if col1.button("+chat", key="show_col2", help="Mostrar chat", args=None):
+    if col1.button("Mostrar chat", key="show_col2", help="Mostrar chat", args=None):
         st.session_state.show_col2 = True
     col1.markdown(icon_svg, unsafe_allow_html=True)
 col1.markdown("</div>", unsafe_allow_html=True)
